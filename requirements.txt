@@ -11,7 +11,7 @@ colorama==0.4.5
 gunicorn==20.1.0
 h11
 httpcore
-httpx
+httpx==23
 idna==2.10
 iso8601==1.0.2
 itsdangerous==2.1.2
@@ -23,7 +23,7 @@ metaapi-cloud-risk-management-sdk==1.2.1
 metaapi-cloud-sdk==20.9.0
 multidict==6.0.2
 prettytable==3.3.0
-typing-extensions==3.10.0.0
+typing-extensions>=4.1
 python-engineio==3.14.2
 python-socketio==4.6.0
 python-telegram-bot==13.13
