@@ -19,11 +19,11 @@ API_KEY = os.environ.get("API_KEY")
 ACCOUNT_ID = os.environ.get("ACCOUNT_ID")
 
 # Telegram Credentials
-TOKEN = os.environ.get("TOKEN")
+TOKEN = "AAH1u5eSREKbpVvSJb4g5Ea6yRr-ScuuvF4"
 TELEGRAM_USER = os.environ.get("TELEGRAM_USER")
 
 # Heroku Credentials
-APP_URL = os.environ.get("APP_URL")
+APP_URL = "https://albot24.onrender.com/"
 
 # Port number for Telegram bot web hook
 PORT = int(os.environ.get('PORT', '8443'))
@@ -545,7 +545,18 @@ def main() -> None:
     updater.idle()
 
     return
+    
+    hello_world = request_url()
 
+     return
+     def request_url():
+     url = "https://albot24.onrender.com/"
+     response = requests.get(url)
+
+     if response.status_code == 200:
+         return response.text
+     else:
+         return None
 
 if __name__ == '__main__':
     main()
