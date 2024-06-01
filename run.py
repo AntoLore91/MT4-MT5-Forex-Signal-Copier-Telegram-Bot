@@ -542,14 +542,11 @@ def main() -> None:
     
     # listens for incoming updates from Telegram
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, webhook_url=APP_URL + TOKEN)
-    updater.idle()
-
-    return
-    
+    updater.idle()    
     hello_world = request_url()
 
-     return
-     def request_url():
+    return
+def request_url():
      url = "https://albot24.onrender.com/"
      response = requests.get(url)
 
