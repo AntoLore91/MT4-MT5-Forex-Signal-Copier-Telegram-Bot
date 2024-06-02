@@ -549,14 +549,6 @@ def main() -> None:
     hello_world = request_url()
 
     return
-def request_url():
-     url = "https://albot24.onrender.com/"
-     response = requests.get(url)
-
-     if response.status_code == 200:
-         return response.text
-     else:
-         return None
 
 if __name__ == '__main__':
     main()
