@@ -16,10 +16,10 @@ from telegram.ext import CommandHandler, Filters, MessageHandler, Updater, Conve
 
 # MetaAPI Credentials
 API_KEY = os.environ.get("API_KEY")
-ACCOUNT_ID = "afcbf159-adf5-402a-a887-18458ca7689a"
+ACCOUNT_ID = os.environ.get("ACCOUNT_ID")
 
 # Telegram Credentials
-TOKEN = "7415637182:AAH1u5eSREKbpVvSJb4g5Ea6yRr-ScuuvF4"
+TOKEN = "7415637182:AAFOB5YCD0--aPWfu2o4KAhqV95xd8t0md8"
 TELEGRAM_USER = os.environ.get("TELEGRAM_USER")
 
 # Heroku Credentials
