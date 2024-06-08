@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 CALCULATE, TRADE, DECISION = range(3)
 
 # allowed FX symbols
-SYMBOLS = ['BTCUSD', 'AUDCAD.pro', 'AUDCHF', 'AUDJPY', 'AUDNZD', 'AUDUSD', 'CADCHF', 'CADJPY', 'CHFJPY', 'EURAUD', 'EURCAD', 'EURCHF', 'EURGBP', 'EURJPY', 'EURNZD', 'EURUSD.', 'GBPAUD', 'GBPCAD', 'GBPCHF', 'GBPJPY', 'GBPNZD', 'GBPUSD.pro', 'NOW', 'NZDCAD', 'NZDCHF', 'NZDJPY', 'NZDUSD', 'USDCAD', 'USDCHF', 'USDJPY', 'XAGUSD', 'XAUUSD']
+SYMBOLS = ['BTCUSD', 'AUDCAD', 'AUDCHF', 'AUDJPY', 'AUDNZD', 'AUDUSD', 'CADCHF', 'CADJPY', 'CHFJPY', 'EURAUD', 'EURCAD', 'EURCHF', 'EURGBP', 'EURJPY', 'EURNZD', 'EURUSD.', 'GBPAUD', 'GBPCAD', 'GBPCHF', 'GBPJPY', 'GBPNZD', 'GBPUSD', 'NOW', 'NZDCAD', 'NZDCHF', 'NZDJPY', 'NZDUSD', 'USDCAD', 'USDCHF', 'USDJPY', 'XAGUSD', 'XAUUSD']
 
 # RISK FACTOR
 RISK_FACTOR = float(os.environ.get("RISK_FACTOR"))
@@ -241,6 +241,10 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
 
         update.effective_message.reply_text("Successfully connected to MetaTrader!\nCalculating trade risk ... 🤔")
 
+        # Aggiungi il suffisso ".pro" eccetto per BTCUSD e XAUUSD
+        if (trade['Symbol'] not in ["BTCUSD", "XAUUSD"]):
+            trade['Symbol'] += ".pro"
+
         # checks if the order is a market execution to get the current price of symbol
         if(trade['Entry'] == 'NOW'):
             price = await connection.get_symbol_price(symbol=trade['Symbol'])
@@ -262,7 +266,8 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
             # enters trade on to MetaTrader account
             update.effective_message.reply_text("Entering trade on MetaTrader Account ... 👨🏾‍💻")
 
-            try:
+            for loop in range(3):
+                try:
                 # executes buy market execution order
                 if(trade['OrderType'] == 'Buy'):
                     for takeProfit in trade['TP']:
