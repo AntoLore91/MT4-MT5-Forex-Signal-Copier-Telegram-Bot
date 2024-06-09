@@ -97,10 +97,23 @@ def ParseSignal(signal: str) -> dict:
     else:
         trade['Entry'] = float((signal[1].split())[-1])
     
-    trade['StopLoss'] = float((signal[5].split())[-1])
+    if(len(signal) == 5):
+        trade['StopLoss'] = float((signal[5].split())[-1])
+    elif (len(signal) == 4):
+        trade['StopLoss'] = float((signal[4].split())[-1])
+    else:
+        trade['StopLoss'] = float((signal[3].split())[-1])    
+
+    # TP1
     trade['TP'] = [float((signal[2].split())[-1])]
-    trade['TP'].append(float(signal[3].split()[-1]))
-    trade['TP'].append(float(signal[4].split()[-1]))
+    
+    # checks if there's a forth line and parses it for TP2
+    if(len(signal) == 4):
+        trade['TP'].append(float(signal[3].split()[-1]))
+
+    # checks if there's a fifth line and parses it for TP3
+    if(len(signal) == 5):
+        trade['TP'].append(float(signal[4].split()[-1]))
     
         
     # adds risk factor to trade
@@ -125,7 +138,7 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
         multiplier = 0.001
 
     elif(trade['Symbol'] == 'BTCUSD'):
-         multiplier = 10
+         multiplier = 0.1
 
     elif(str(trade['Entry']).index('.') >= 2):
         multiplier = 0.01
@@ -137,8 +150,8 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
     stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
 
     # calculates the position size using stop loss and RISK FACTOR
-    #trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
-    trade['PositionSize'] = 0.1
+    trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
+    #trade['PositionSize'] = 0.1
 
     # calculates the take profit(s) in pips
     takeProfitPips = []
