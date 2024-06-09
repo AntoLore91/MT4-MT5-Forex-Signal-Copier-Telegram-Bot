@@ -97,25 +97,25 @@ def ParseSignal(signal: str) -> dict:
     else:
         trade['Entry'] = float((signal[1].split())[-1])
     
-    if(len(signal) == 5):
-        trade['StopLoss'] = float((signal[5].split())[-1])
-    elif (len(signal) == 4):
-        trade['StopLoss'] = float((signal[4].split())[-1])
-    else:
-        trade['StopLoss'] = float((signal[3].split())[-1])    
+        if(len(signal) == 5):
+            trade['StopLoss'] = float((signal[5].split())[-1])
+        elif (len(signal) == 4):
+            trade['StopLoss'] = float((signal[4].split())[-1])
+        else:
+            trade['StopLoss'] = float((signal[3].split())[-1])    
 
-    # TP1
-    trade['TP'] = [float((signal[2].split())[-1])]
-    
-    # checks if there's a forth line and parses it for TP2
-    if(len(signal) == 4):
-        trade['TP'].append(float(signal[3].split()[-1]))
-
-    # checks if there's a fifth line and parses it for TP3
-    if(len(signal) == 5):
-        trade['TP'].append(float(signal[4].split()[-1]))
-    
+        # TP1
+        trade['TP'] = [float((signal[2].split())[-1])]
         
+        # checks if there's a forth line and parses it for TP2
+        if(len(signal) == 4):
+            trade['TP'].append(float(signal[3].split()[-1]))
+
+        # checks if there's a fifth line and parses it for TP3
+        if(len(signal) == 5):
+            trade['TP'].append(float(signal[4].split()[-1]))
+        
+            
     # adds risk factor to trade
     trade['RiskFactor'] = RISK_FACTOR
 
