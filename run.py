@@ -127,7 +127,7 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
         multiplier = 0.001
 
     elif(trade['Symbol'] == 'BTCUSD'):
-         multiplier = 0.1
+         multiplier = 1
 
     elif(str(trade['Entry']).index('.') >= 2):
         multiplier = 0.01
