@@ -97,13 +97,12 @@ def ParseSignal(signal: str) -> dict:
     else:
         trade['Entry'] = float((signal[1].split())[-1])
     
-    trade['StopLoss'] = float((signal[2].split())[-1])
-    trade['TP'] = [float((signal[3].split())[-1])]
-
-    # checks if there's a fourth line and parses it for TP2
-    if(len(signal) > 4):
-        trade['TP'].append(float(signal[4].split()[-1]))
+    trade['StopLoss'] = float((signal[5].split())[-1])
+    trade['TP'] = [float((signal[2].split())[-1])]
+    trade['TP'].append(float(signal[3].split()[-1]))
+    trade['TP'].append(float(signal[4].split()[-1]))
     
+        
     # adds risk factor to trade
     trade['RiskFactor'] = RISK_FACTOR
 
@@ -266,48 +265,47 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
             # enters trade on to MetaTrader account
             update.effective_message.reply_text("Entering trade on MetaTrader Account ... 👨🏾‍💻")
 
-            for loop in range(3):
-                try:
-                    # executes buy market execution order
-                    if(trade['OrderType'] == 'Buy'):
-                        for takeProfit in trade['TP']:
-                            result = await connection.create_market_buy_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['StopLoss'], takeProfit)
+            try:
+                # executes buy market execution order
+                if(trade['OrderType'] == 'Buy'):
+                    for takeProfit in trade['TP']:
+                        result = await connection.create_market_buy_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['StopLoss'], takeProfit)
 
-                    # executes buy limit order
-                    elif(trade['OrderType'] == 'Buy Limit'):
-                        for takeProfit in trade['TP']:
-                            result = await connection.create_limit_buy_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
+                # executes buy limit order
+                elif(trade['OrderType'] == 'Buy Limit'):
+                    for takeProfit in trade['TP']:
+                        result = await connection.create_limit_buy_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
 
-                    # executes buy stop order
-                    elif(trade['OrderType'] == 'Buy Stop'):
-                        for takeProfit in trade['TP']:
-                            result = await connection.create_stop_buy_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
+                # executes buy stop order
+                elif(trade['OrderType'] == 'Buy Stop'):
+                    for takeProfit in trade['TP']:
+                        result = await connection.create_stop_buy_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
 
-                    # executes sell market execution order
-                    elif(trade['OrderType'] == 'Sell'):
-                        for takeProfit in trade['TP']:
-                            result = await connection.create_market_sell_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['StopLoss'], takeProfit)
+                # executes sell market execution order
+                elif(trade['OrderType'] == 'Sell'):
+                    for takeProfit in trade['TP']:
+                        result = await connection.create_market_sell_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['StopLoss'], takeProfit)
 
-                    # executes sell limit order
-                    elif(trade['OrderType'] == 'Sell Limit'):
-                        for takeProfit in trade['TP']:
-                            result = await connection.create_limit_sell_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
+                # executes sell limit order
+                elif(trade['OrderType'] == 'Sell Limit'):
+                    for takeProfit in trade['TP']:
+                        result = await connection.create_limit_sell_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
 
-                    # executes sell stop order
-                    elif(trade['OrderType'] == 'Sell Stop'):
-                        for takeProfit in trade['TP']:
-                            result = await connection.create_stop_sell_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
-                    
-                    # sends success message to user
-                    update.effective_message.reply_text("Trade entered successfully! 💰")
-                    
-                    # prints success message to console
-                    logger.info('\nTrade entered successfully!')
-                    logger.info('Result Code: {}\n'.format(result['stringCode']))
+                # executes sell stop order
+                elif(trade['OrderType'] == 'Sell Stop'):
+                    for takeProfit in trade['TP']:
+                        result = await connection.create_stop_sell_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
                 
-                except Exception as error:
-                    logger.info(f"\nTrade failed with error: {error}\n")
-                    update.effective_message.reply_text(f"There was an issue 😕\n\nError Message:\n{error}")
+                # sends success message to user
+                update.effective_message.reply_text("Trade entered successfully! 💰")
+                
+                # prints success message to console
+                logger.info('\nTrade entered successfully!')
+                logger.info('Result Code: {}\n'.format(result['stringCode']))
+            
+            except Exception as error:
+                logger.info(f"\nTrade failed with error: {error}\n")
+                update.effective_message.reply_text(f"There was an issue 😕\n\nError Message:\n{error}")
     
     except Exception as error:
         logger.error(f'Error: {error}')
