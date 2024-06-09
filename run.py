@@ -139,8 +139,11 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
     stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
 
     # calculates the position size using stop loss and RISK FACTOR
-    trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
-    #trade['PositionSize'] = 0.01
+    trade['PositionSize'] = round(math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100, 2)
+    if (trade['PositionSize'] < 0.01):
+       trade['PositionSize'] = 0.01
+    else: 
+        trade['PositionSize']
 
     # calculates the take profit(s) in pips
     takeProfitPips = []
