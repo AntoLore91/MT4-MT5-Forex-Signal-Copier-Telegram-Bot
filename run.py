@@ -120,7 +120,7 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
     """
 
     # calculates the stop loss in pips
-    if(trade['Symbol'] == 'XAUUSD' or 'GOLD'):
+    if(trade['Symbol'] in ['XAUUSD', 'GOLD']):
         multiplier = 0.1
 
     elif(trade['Symbol'] == 'XAGUSD'):
@@ -140,11 +140,14 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
 
     # calculates the position size using stop loss and RISK FACTOR
     #trade['PositionSize'] = round((math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100) / len(trade['TP']), 2)
-    trade['PositionSize'] = 1.00
-    if (trade['PositionSize'] < 0.01):
-       trade['PositionSize'] = 0.01
-    else: 
-        trade['PositionSize']
+    #if (trade['PositionSize'] < 0.01):
+    #   trade['PositionSize'] = 0.01
+    #else: 
+    #    trade['PositionSize']
+    
+    positionSize = 1.0
+    trade['PositionSize'] = max(0.01, positionSize)  # Ensure minimum position size of 0.01
+
 
     # calculates the take profit(s) in pips
     takeProfitPips = []
