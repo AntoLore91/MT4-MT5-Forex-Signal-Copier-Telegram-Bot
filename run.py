@@ -145,7 +145,7 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
     #else: 
     #    trade['PositionSize']
     
-    positionSize = 1.0
+    positionSize = 0.1
     trade['PositionSize'] = max(0.01, positionSize)  # Ensure minimum position size of 0.01
 
 
